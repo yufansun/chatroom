@@ -12,11 +12,13 @@
   </head>
   <body >
     <div id="content"></div>
-    
+   <!-- <script src="/socket.js"></script> -->
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script type="text/babel">
       // To get started with this tutorial running your own code, simply remove
       // the script tag loading scripts/example.js and start writing code here.
 
+//var socket = io();
 
 
 var ContactBox = React.createClass({
@@ -93,20 +95,32 @@ var ContactList = React.createClass({
 
 
 var Contact = React.createClass({
-  rawMarkup: function() {
-    var rawMarkup = marked(this.props.children.toString(), {sanitize: true});
-    return { __html: rawMarkup };
-  },
+
 
   render: function() {
+    if (1===1){
     return (
+      
       <div className="contact">
         <h3 className="contactName">
           {this.props.Name}
         </h3>
-        <span dangerouslySetInnerHTML={this.rawMarkup()} />
+        {this.props.key}  
       </div>
-    );
+      
+    );} //else{
+      
+    //  return (
+        /*
+      <div className="contact">
+        <h3 className="contactName">
+          {this.props.Name}
+        </h3>
+        //{this.props.children}
+        */
+      //  );
+
+   // }
   }
 });
 
