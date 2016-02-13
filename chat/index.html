@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>I'm the title</title>
+	</head>
+	<body>
+		<p>I'm the body</p>
+		<form action=""><input id="fakeid" type="text"/><button>Submit</button></form>
+	</body>
+</html>
+
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+	var socket=io();
+	$('form').submit(function(){
+		//console.log("I submitted");
+		socket.emit('seen', $('#fakeid').val());
+		$('#fakeid').val('');
+		return false;
+	});
+	socket.on('status',function(obj){
+		console.log(obj.id+" is online? "+obj.status);
+	})
+</script>

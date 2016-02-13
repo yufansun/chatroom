@@ -2,24 +2,34 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>React Tutorial</title>
+    <title>Chatroom React</title>
     <link rel="stylesheet" href="css/base.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
+
   </head>
   <body >
     <div id="content"></div>
    <!-- <script src="/socket.js"></script> -->
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
     <script type="text/babel">
-      // To get started with this tutorial running your own code, simply remove
-      // the script tag loading scripts/example.js and start writing code here.
 
-//var socket = io();
 
+//socket
+  var socket=io();
+  $('form').submit(function(){
+    //console.log("I submitted");
+    socket.emit('seen', $('#fakeid').val());
+    $('#fakeid').val('');
+    return false;
+  });
+  socket.on('status',function(obj){
+    console.log(obj.id+" is online? "+obj.status);
+  })
 
 var ContactBox = React.createClass({
   loadCommentsFromServer: function() {
@@ -66,8 +76,8 @@ var ContactBox = React.createClass({
   },
   render: function() {
     return (
-      <div className="contactBox">
-        <h1>Recent Contacts</h1>
+      <div style={Background_ContactBox} className="contactBox">
+        <h2>Recent Contacts</h2>
         <ContactList data={this.state.data} />
       </div>
     );
@@ -79,13 +89,13 @@ var ContactList = React.createClass({
   render: function() {
         var commentNodes = this.props.data.map(function(contact) {
       return (
-        <Contact Name={contact.Name} key={contact.id}>
-          {contact.status}
+        <Contact Name={contact.Name} key={contact.id} Status={contact.Status}>
+          {contact.Status}
         </Contact>
       );
     });
     return (
-      <div className="contactList">
+      <div style={Background_ContactList} className="contactList">
         {commentNodes}
       </div>
     );
@@ -95,35 +105,62 @@ var ContactList = React.createClass({
 
 
 var Contact = React.createClass({
-
-
   render: function() {
-    if (1===1){
-    return (
-      
-      <div className="contact">
-        <h3 className="contactName">
+    if (this.props.Status=="true"){
+    return (      
+      <div style={Background_Contacts} className="contact">
+        <span style={StatusTrue}>
+        O  
+        </span>
+        <span className="contactName">
           {this.props.Name}
-        </h3>
-        {this.props.key}  
+        </span>
+        <b style={Badge}> </b>
       </div>
       
-    );} //else{
-      
-    //  return (
-        /*
-      <div className="contact">
-        <h3 className="contactName">
+    );} else{
+      return(
+      <div style={Background_Contacts} className="contact">
+      <span style={StatusFalse}>
+       O 
+        </span>
+        <span className="contactName">
           {this.props.Name}
-        </h3>
-        //{this.props.children}
-        */
-      //  );
-
-   // }
+        </span>
+      </div>
+        );}
   }
 });
-
+var StatusTrue = {
+   color: 'green'
+ };
+ var StatusFalse = {
+   color: 'red'
+ };
+ var Background_Contacts = {
+  //backgroundColor: '#F0F0F0',
+  //marginRight: 900
+  fontSize: 20
+ };
+  var Background_ContactBox = {
+  backgroundColor: '#3a3f51',
+  color: '#a6a8b1',
+  marginRight: 900
+ };
+ var Background_ContactList = {
+  //backgroundColor: '#F0F0F0'
+ };
+ var Badge = {
+  // display: inline-block,
+  //   min-width: 10px,
+  //   padding: 3px 7px,
+    color: '#fff'
+    // text-align: center,
+    // white-space: nowrap,
+    // vertical-align: baseline,
+    // background-color: #777,
+    // border-radius: 10px
+ };
 ReactDOM.render(
   <ContactBox url="/api/comments" pollInterval={2000} />,
   document.getElementById('content')
