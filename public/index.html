@@ -62,14 +62,7 @@ var Wrapper = React.createClass({
     return {data: data};
   },
 
-  componentDidMount: function () {
-    var _this=this;
-    socket.on('initialStatus',function(initialStatus){
-      console.log("Initial State");
-      //console.log(data[obj.id].Status);
-      _this.setStatus({data:initialStatus});
-    })
-  },
+ 
 
   render: function(){
     console.log("hahahah "+data[0].Status);
@@ -86,6 +79,14 @@ var Wrapper = React.createClass({
 var ContactBox = React.createClass({
   getInitialState: function() {
     return {data: data};
+  },
+   componentDidMount: function () {
+    var _this=this;
+    socket.on('initialStatus',function(initialStatus){
+      console.log("Initial State");
+      //console.log(data[obj.id].Status);
+      _this.setStatus({data:initialStatus});
+    })
   },
   render: function() {
     return (
