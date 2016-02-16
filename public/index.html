@@ -10,10 +10,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
 
+
   </head>
   <body >
     <div id="content"></div>
-   <!-- <script src="/socket.js"></script> -->
+   <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
     <script type="text/babel">
@@ -32,11 +33,24 @@
   // })
 
 
+
 var data = [
   {id: 1, Name: "Yufan Sun", Status: "true"},
   {id: 2, Name: "Qinye Li", Status: "false"},
-  {id: 3, Name: "Yanda Huang", Status: "true"}
+  {id: 3, Name: "Yanda Huang", Status: "true"},
+  {id: 4, Name: "Shengjie Pan", Status: "true"},
+  {id: 5, Name: "Shuoyang Cui", Status: "false"}
 ];
+
+var socket=io();
+socket.emit('chat message',"Yufan Sun is here");
+socket.on('seen',function(data){
+  console.log(data[0].Name+" is online");
+})
+
+  socket.on('status',function(obj){
+    console.log(obj.id+" is online? "+obj.status);
+  })
 
 
 var Wrapper = React.createClass({
