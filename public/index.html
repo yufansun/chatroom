@@ -41,33 +41,17 @@
 //   {id: 4, Name: "Shengjie Pan", Status: "false"},
 //   {id: 5, Name: "Shuoyang Cui", Status: "false"}
 // ];
-var data = [
-  {id: 1, Name: "No one", Status: "true"},
-  {id: 2, Name: "Qinye Li", Status: "false"}
-];
 
 var socket=io();
 socket.emit('myID',"Yufan");
-socket.emit('seen',data[0].id);
-socket.emit(data[0].id,data[0].Name);
-socket.on('status',function(obj){
-    console.log(obj.id+" is online? "+obj.Status);
-    console.log(data[obj.id].Status);
-  })
-
-
 
 var Wrapper = React.createClass({
-    getInitialState: function() {
-    return {data: data};
-  },
 
   render: function(){
-    console.log("hahahah "+data[0].Status);
     return(
       <div className="wrapper">
       <h1>StuffPass</h1>
-      <ContactBox data={this.state.data}/>
+      <ContactBox/>
       <h2>Chatting Part</h2>
       <InputBox />
       </div>
@@ -77,21 +61,23 @@ var Wrapper = React.createClass({
 
 var ContactBox = React.createClass({
   getInitialState: function() {
-    return {data: data};
+    //return {data: data};
+    return {dataState: [{ key:0, Name:"No one", Statue: "false"}] }
+        
   },
    componentDidMount: function () {
     var _this=this;
     socket.on('initialStatus',function(initialStatus){
       console.log("Initial State");
       //console.log(data[obj.id].Status);
-      _this.setStatus({data:initialStatus});
+      _this.setState({dataState:initialStatus});
     })
   },
   render: function() {
     return (
       <div style={Background_ContactBox} className="contactBox">
         <h2>Recent Contacts</h2>
-        <ContactList data={this.state.data} />
+        <ContactList data={this.state.dataState} />
       </div>
     );
   }
@@ -214,7 +200,7 @@ var StatusTrue = {
     // border-radius: 10px
  };
 ReactDOM.render(
-  <Wrapper data={data} />,
+  <Wrapper/>,
   document.getElementById('content')
 );  
     </script>
