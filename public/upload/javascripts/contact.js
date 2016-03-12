@@ -25,3 +25,4 @@ var Contact = React.createClass({
         );}
   }
 });
+export default Contact;

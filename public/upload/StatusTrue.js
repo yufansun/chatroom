@@ -1,3 +1,0 @@
-var StatusTrue = {
-   color: 'green'
- };
