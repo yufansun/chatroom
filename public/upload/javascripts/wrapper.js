@@ -1,5 +1,6 @@
-import ContactBox from './contactBox.js'
-import InputBox from 'imputBox.js'
+import ContactBox from './contactBox.js';
+import InputBox from 'inputBox.js';
+
 var Wrapper = React.createClass({
 
   render: function(){

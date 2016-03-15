@@ -1,4 +1,6 @@
 import ContactList from './contactList.js';
+import Background_ContactBox from 'backgroundContactBox.js';
+
 var ContactBox = React.createClass({
   getInitialState: function() {
     return {dataState: [{ key:0, Name:"No one", Statue: "false"}] }

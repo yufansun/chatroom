@@ -2,8 +2,11 @@ var io = require("./server");
 var stable = require("./stable")
 console.log("Server running!")
 var contactStatus = [
-	{id: 1, Name: "Ren Lu",Status: "true"},
-	{id: 2, Name: "Qinye Li",Status: "false"}
+  {id: 1, Name: "Yufan Sun", Status: "true"},
+  {id: 2, Name: "Qinye Li", Status: "false"},
+  {id: 3, Name: "Yanda Huang", Status: "true"},
+  {id: 4, Name: "Shengjie Pan", Status: "false"},
+  {id: 5, Name: "Shuoyang Cui", Status: "false"}
 ];
 io.on('connection', function(socket){
 	console.log("On connection");

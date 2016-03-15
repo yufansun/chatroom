@@ -13,7 +13,7 @@ var ContactList = React.createClass({
       );
     });
     return (
-      <div style={Background_ContactList} className="contactList">
+      <div className="contactList">
         {contactNodes}
       </div>
     );

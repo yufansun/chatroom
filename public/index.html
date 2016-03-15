@@ -6,9 +6,7 @@
     <link rel="stylesheet" href="css/base.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.0/react-dom.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.15/browser.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
+
 
 
   </head>
@@ -34,17 +32,8 @@
 
 
 
-// var data = [
-//   {id: 1, Name: "Yufan Sun", Status: "true"},
-//   {id: 2, Name: "Qinye Li", Status: "false"},
-//   {id: 3, Name: "Yanda Huang", Status: "true"},
-//   {id: 4, Name: "Shengjie Pan", Status: "false"},
-//   {id: 5, Name: "Shuoyang Cui", Status: "false"}
-// ];
-
 var socket=io();
 socket.emit('myID',"Yufan");
-
 var Wrapper = React.createClass({
 
   render: function(){
@@ -53,7 +42,7 @@ var Wrapper = React.createClass({
       <h1>StuffPass</h1>
       <ContactBox/>
       <h2>Chatting Part</h2>
-      <InputBox />
+      //<Chat />
       </div>
       );
   }
@@ -135,38 +124,158 @@ var Contact = React.createClass({
 });
 
 
+
+
+
+
+
+// var MessageBox = React.createClass({
+//   handleCommentSubmit: function(comment) {
+//     // TODO: submit to the server and refresh the list
+//   },
+//     render: function() {
+//     return (
+//       <div className="messageBox">
+//         <h3>Chat Message</h3>
+//         <InputBox onMsgSubmit={this.handleSubmit} />
+//       </div>
+
+//     );
+//   }
+// })
+
+// var MessageList = React.createClass({
+
+//   render: function() {
+//         var messageNodes = this.props.msg.map(function(message) {
+//       return (
+//         <Message Msg={message.msg} Sender={message.id}>
+//         </Message>
+//       );
+//     });
+//     return (
+//       <div className="messageList">
+//         {messageNodes}
+//       </div>
+//     );
+//   }
+// });
+
+// var Message = React.createClass({
+//   render: function() {
+//     return (      
+//       <div className="message">
+//         <span>
+//           {this.props.Msg}
+//         </span>
+//       </div>
+      
+//     );
+//   }
+// });
+
+// var InputBox = React.createClass({
+//   getInitialState: function(){
+//     return {sender: '', msg: ''};
+//   },
+//   handleMsgChange: function(e){
+//     this.setState({msg: e.target.value});
+//   },
+//   handleSubmit: function(e){
+//     //may have error because I didn't implement this function
+//     e.preventDefault();
+//     var msg = this.state.msg.trim();
+//     if(!msg){
+//       return;
+//     }
+
+//     var messages = this.state.msg;
+//     msg.id = Date.now();
+//     var newMessages = messages.concat([message]);
+//     this.setState({msg: newMessages});
+
+
+//     socket.emit("chat message", msg);
+//     console.log("chat message: "+msg+" sent!");
+//     this.props.onMsgSubmit({msg: msg});
+//     this.setState({msg:''});
+//   },
+//   render: function(){
+//     return (
+//       <form className="inputBox" onSubmit={this.handleSubmit}>
+//       <input 
+//       type="text" 
+//       placeholder="Say something..." 
+//       //may have some bugs with state
+//       value={this.state.msg}
+//       onChange={this.handleMsgChange}/>
+//       <input type="submit" value="Send" />
+//       </form>
+//       );
+//   }
+// });
+
+
+
+
+
+
+
 var InputBox = React.createClass({
-  getInitialState: function(){
-    return {sender: '', msg: ''};
+  getInitialState() {
+    return {
+      messages: [],
+      userName: ''
+    }
   },
-  handleMsgChange: function(e){
-    this.setState({msg: e.target.value});
+  componentWillMount() {
+    let socket = io();
   },
-  handleSubmit: function(e){
-    //may have error because I didn't implement this function
+  componentDidMount() {
+    var username = '';
+
+    do {
+      username = prompt('Enter name:');
+    } while (!username.length);
+
+    this.setState({
+      userName: username
+    });
+  },
+  change() {
+    this.setState({
+      messages: Store.get()
+    });
+  },
+  sendMessage(e) {
     e.preventDefault();
-    var msg = this.state.msg.trim();
-    if(!msg){
+    let from = this.state.userName;
+    let text = this.refs['msg'].getDOMNode().value;
+    let timestamp = Date.now();
+
+    if(!from.length || !text.length) {
+      alert('Name and message is required');
       return;
     }
-    socket.emit("chat message", msg);
-    console.log("chat message: "+msg+" sent!");
-    this.setState({msg:''});
+
+    this.refs['form'].getDOMNode().reset();
   },
-  render: function(){
-    return (
-      <form className="inputBox" onSubmit={this.handleSubmit}>
-      <input 
-      type="text" 
-      placeholder="Say something..." 
-      //may have some bugs with state
-      value={this.state.msg}
-      onChange={this.handleMsgChange}/>
-      <input type="submit" value="Send" />
+  render() {
+    return <div>
+      <ul className="messages" ref='messages'>
+        {this.state.messages.map((msg, k) => {
+          return <li key={k}><span className='msgSender'>{msg.from}:</span> {msg.text}</li>
+        })}
+      </ul>
+      <form className='form' ref='form'>
+        <input autoComplete="off" className='msg' placeholder='message' ref='msg' />
+        <button onClick={this.sendMessage}>Send</button>
       </form>
-      );
+    </div>;
   }
 });
+
+
 
 //********************UI**********************
 var StatusTrue = {
@@ -206,4 +315,3 @@ ReactDOM.render(
     </script>
   </body>
 </html>
-

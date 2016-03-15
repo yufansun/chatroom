@@ -1,0 +1,31 @@
+{
+  "name": "chat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify -t babelify -d -e app.js -o ../../public/build/resetPassword.js",
+    "build-watch": "watchify -t babelify -d -e app.js -o ../../public/build/resetPassword.js -v"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babelify": "^6.3.0",
+    "browserify": "^11.1.0",
+    "es6-promise": "^3.0.2",
+    "isomorphic-fetch": "^2.1.1",
+    "react": "^0.14.0",
+    "react-dom": "^0.14.3",
+    "react-mdl": "^1.0.0",
+    "react-motion": "^0.3.0",
+    "react-redux": "^3.1.0",
+    "redux": "^3.0.2",
+    "redux-form": "^3.0.0",
+    "redux-thunk": "^1.0.0",
+    "watchify": "^3.4.0"
+  },
+  "dependencies": {
+    "common": "file:../common"
+  }
+}
