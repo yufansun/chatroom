@@ -10,7 +10,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.2/marked.min.js"></script>
 
-
   </head>
   <body >
     <div id="content"></div>
@@ -33,14 +32,6 @@
   // })
 
 
-
-// var data = [
-//   {id: 1, Name: "Yufan Sun", Status: "true"},
-//   {id: 2, Name: "Qinye Li", Status: "false"},
-//   {id: 3, Name: "Yanda Huang", Status: "true"},
-//   {id: 4, Name: "Shengjie Pan", Status: "false"},
-//   {id: 5, Name: "Shuoyang Cui", Status: "false"}
-// ];
 
 var socket=io();
 socket.emit('myID',"Yufan");
@@ -107,6 +98,10 @@ var ContactList = React.createClass({
 
 
 var Contact = React.createClass({
+  handleContactClick: function(event) {
+    console.log(this.props.Name+" clicked!");
+    this.setState({message_to: this.props.Name});
+  },
   render: function() {
     if (this.props.Status=="true"){
     return (      
@@ -114,7 +109,7 @@ var Contact = React.createClass({
         <span style={StatusTrue}>
         O  
         </span>
-        <span className="contactName">
+        <span className="contactName" onClick={this.handleContactClick}>
           {this.props.Name}
         </span>
         <b style={Badge}> </b>
@@ -126,7 +121,7 @@ var Contact = React.createClass({
       <span style={StatusFalse}>
        O 
         </span>
-        <span className="contactName">
+        <span className="contactName"  onClick={this.handleContactClick}>
           {this.props.Name}
         </span>
       </div>
@@ -231,7 +226,7 @@ var MessageBox = React.createClass({
 
   componentDidMount() {
       socket.on('init', this._initialize);
-      socket.on('send:message', this._messageRecieve);
+      socket.on('chat message', this._messageRecieve);
   },
 
   _initialize(data) {
@@ -251,14 +246,14 @@ var MessageBox = React.createClass({
       var {messages} = this.state;
       messages.push(message);
       this.setState({messages});
-      socket.emit('send:message', message);
-      console.log("chat message: "+message+" sent!");
+      socket.emit('chat message', message);
+      console.log("chat message"+message+" sent!");
   },
 
 
   render() {
       return (
-          <div>
+          <div className='messageBox'>
               <MessageList
                   messages={this.state.messages}
               />
@@ -276,13 +271,13 @@ var MessageBox = React.createClass({
 var MessageList = React.createClass({
   render() {
       return (
-          <div className='messages'>
+          <div className='messageList'>
               {
                   this.props.messages.map((message, i) => {
                       return (
                           <Message
                               key={i}
-                              user={message.user}
+                              user={"Me"}
                               text={message.text}
                           />
                       );
@@ -330,6 +325,7 @@ var MessageForm = React.createClass({
               <h4>Write New Message</h4>
               <form onSubmit={this.handleSubmit}>
                   <input
+                      placeholder="Say something..." 
                       onChange={this.changeHandler}
                       value={this.state.text}
                   />
@@ -367,6 +363,7 @@ var StatusTrue = {
  };
  var Background_ContactList = {
   //backgroundColor: '#F0F0F0'
+  border: "5px solid green",
  };
  var Badge = {
   // display: inline-block,
@@ -379,6 +376,7 @@ var StatusTrue = {
     // background-color: #777,
     // border-radius: 10px
  };
+
 ReactDOM.render(
   <Wrapper/>,
   document.getElementById('content')
