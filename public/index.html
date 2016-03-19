@@ -247,7 +247,7 @@ var MessageBox = React.createClass({
       messages.push(message);
       this.setState({messages});
       socket.emit('chat message', message);
-      console.log("chat message"+message+" sent!");
+      console.log("chat message "+message.text+" sent!");
   },
 
 
@@ -271,7 +271,7 @@ var MessageBox = React.createClass({
 var MessageList = React.createClass({
   render() {
       return (
-          <div className='messageList'>
+          <div className='messageList' style = {Message_List}>
               {
                   this.props.messages.map((message, i) => {
                       return (
@@ -359,11 +359,10 @@ var StatusTrue = {
   var Background_ContactBox = {
   backgroundColor: '#3a3f51',
   color: '#a6a8b1',
-  marginRight: 900
+  marginRight: 600
  };
  var Background_ContactList = {
   //backgroundColor: '#F0F0F0'
-  border: "5px solid green",
  };
  var Badge = {
   // display: inline-block,
@@ -375,6 +374,11 @@ var StatusTrue = {
     // vertical-align: baseline,
     // background-color: #777,
     // border-radius: 10px
+ };
+  var Message_List = {
+  //backgroundColor: '#F0F0F0'
+  border: "2px solid #a6a8b1",
+  marginRight: 600
  };
 
 ReactDOM.render(

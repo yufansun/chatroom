@@ -17,7 +17,8 @@ io.on('connection', function(socket){
 		console.log("Initial Status sent!")
 	});
 	socket.on('chat message',function(msg){
-		console.log("Received chat message: "+msg);
+		//msg has key, user and text properties
+		console.log("Received chat message: "+msg.text);
 	});
 });
 
