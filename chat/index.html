@@ -1,25 +1,22 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-	<head>
-		<title>I'm the title</title>
-	</head>
-	<body>
-		<p>I'm the body</p>
-		<form action=""><input id="fakeid" type="text"/><button>Submit</button></form>
-	</body>
-</html>
-
-<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-<script>
-	var socket=io();
-	$('form').submit(function(){
-		//console.log("I submitted");
-		socket.emit('seen', $('#fakeid').val());
-		$('#fakeid').val('');
-		return false;
+<head>
+	<meta charset="utf-8">
+	<title>Chatroom React</title>
+	<link rel="stylesheet" href="css/base.css" />
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+	<script>
+	$(document).ready(function() {
+		$(function() { $('#divContainer').draggable(); });
+		$(function() { $("#divResize").draggable().resizable(); });
 	});
-	socket.on('status',function(obj){
-		console.log(obj.id+" is online? "+obj.status);
-	})
 </script>
+</head>
+
+<body>
+	<div id="content"></div>
+	<script src="bundle.js"></script>
+</body>
+</html>
